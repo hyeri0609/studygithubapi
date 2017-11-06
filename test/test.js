@@ -34,7 +34,7 @@ describe("simple query test",function(){
 
 });
 
-
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 describe('query by XMLHttpRequest like from browser', function() {
   it('should return hello world', function() {
