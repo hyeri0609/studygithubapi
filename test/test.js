@@ -33,3 +33,25 @@ describe("simple query test",function(){
   });
 
 });
+
+
+
+describe('query by XMLHttpRequest like from browser', function() {
+  it('should return hello world', function() {
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.open("POST", "http://0.0.0.0:8080/graphql");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.onload = function () {
+      console.log('data returned:', xhr.response);
+      xhr.response.should.containEql({ hello: 'Hello world!' });
+    }
+    xhr.send(JSON.stringify({query: "{ hello }"}));
+
+  });
+});
+
+
+
