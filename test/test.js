@@ -55,3 +55,5 @@ describe('query by XMLHttpRequest like from browser', function() {
 
 
 
+33e0802256a91eb0c00e9cf6c45d82522753d6a9
+
