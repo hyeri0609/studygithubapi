@@ -1,35 +1,41 @@
 var supertest = require("supertest");
 var should = require("should");
 
-var server = supertest.agent("https://api.github.com");
-
-33e0802256a91eb0c00e9cf6c45d82522753d6a9
-
-query {
-  __schema {
-    types {
-      name
-      kind
-      description
-      fields {
-        name
-      }
-    }
-  }
+var superagent = supertest.agent("https://api.github.com");
+var Request = superagent.Request;
+if (Request) {
+  Request.prototype.bearer = function(token) {
+    this.set('Authorization', 'Bearer ' + token);
+  };
 }
 
-describe("simple query test",function(){
-  it("should return hello world",function(done){
-    server
-    .post("/graphql")
-    .send({"query": "{ hello }"})
-    .expect("Content-type",/json/)
-    .expect(200) //HTTP response
+// query {
+//   __schema {
+//     types {
+//       name
+//       kind
+//       description
+//       fields {
+//         name
+//       }
+//     }
+//   }
+// }
+
+/* global describe it */
+describe("get user profile",function(){
+  it("should return user profile",function(done){
+      //superagent.Request.set('Authorization', 'Bearer 33e0802256a91eb0c00e9cf6c45d82522753d6a9');
+    superagent
+    .get("/graphql")
+    .bearer('33e0802256a91eb0c00e9cf6c45d82522753d6a9')
+    .set('Accept', 'application/json')
+    .send({"query": "{ query {  __schema {    types {      name      kind      description      fields {        name      }    }  }} }"})
     .end(function(err,res){
       res.status.should.equal(200);
       res.error.should.equal(false);
       
-      //console.log(res.body.data);
+      console.log(res.body.data);
       res.body.data.should.containEql({ hello: 'Hello world!' });
       done();
     });
