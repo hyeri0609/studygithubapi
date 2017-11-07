@@ -1,44 +1,20 @@
 var request = require('superagent');
 var should = require("should");
 
-// var superagent = supertest.agent("https://api.github.com");
-// var Request = request.Request;
-// if (Request) {
-//   Request.prototype.bearer = function(token) {
-//     Request.set('Authorization', 'Bearer ' + token);
-//   };
-// }
-
-// query {
-//   __schema {
-//     types {
-//       name
-//       kind
-//       description
-//       fields {
-//         name
-//       }
-//     }
-//   }
-// }
-
 /* global describe it */
 describe("get user profile",function(){
   it("should return user profile",function(done){
-      //superagent.Request.set('Authorization', 'Bearer 33e0802256a91eb0c00e9cf6c45d82522753d6a9');
     request
     .post("https://api.github.com/graphql")
-    .set({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + '33e0802256a91eb0c00e9cf6c45d82522753d6a9'})
-    //.bearer('33e0802256a91eb0c00e9cf6c45d82522753d6a9')
-    //.set('Authorization', 'Bearer 33e0802256a91eb0c00e9cf6c45d82522753d6a9')
-    //.set('Accept', 'application/json')
-    .send({"query": "{ query {  __schema {    types {      name      kind      description      fields {        name      }    }  }} }"})
+    .set({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + 'f9383a69e3e79cb70abae61780989af73190b820'})
+    .send({"query": "{ viewer { login } }"})
     .end(function(err, res){
-      res.status.should.equal(200);
-      res.error.should.equal(false);
-      
-      console.log(res.body.data);
-      res.body.data.should.containEql({ hello: 'Hello world!' });
+        if (err || !res.ok) {
+            console.log('Found error');
+        } else {
+            //console.log('yay got ' + JSON.stringify(res.body));
+            res.body.data.should.containEql({"viewer":{"login":"hyeri0609"}});
+        }
       done();
     });
   });
